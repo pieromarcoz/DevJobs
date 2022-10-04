@@ -2,10 +2,32 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Salario;
+use App\Models\Categoria;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Vacante extends Model
 {
     use HasFactory;
+    protected $dates = ['ultimo_dia'];
+    protected $fillable = [
+        'titulo',
+        'salario_id',
+        'empresa',
+        'categoria_id',
+        'ultimo_dia',
+        'descripcion',
+        'imagen',
+        'user_id',
+        'publicado',
+    ];
+
+    public function categoria(){
+        return $this->belongsTo(Categoria::class);
+    }
+
+    public function salario(){
+        return $this->belongsTo(Salario::class);
+    }
 }
