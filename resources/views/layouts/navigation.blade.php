@@ -10,6 +10,7 @@
                     </a>
                 </div>
                 @auth
+                @can('create', App\Models\Vacante::class)
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     <x-nav-link :href="route('vacantes.index')" :active="request()->routeIs('vacantes.index')">
@@ -19,6 +20,7 @@
                         {{ __('Crear Vacante') }}
                     </x-nav-link>
                 </div>
+                @endcan
                 @endauth
 
             </div>
@@ -26,6 +28,11 @@
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ml-6">
                 @auth
+                @can('create', App\Models\Vacante::class)
+                    <a class="mr-2 w-7 h-7 bg-indigo-600 hover:bg-indigo-800 rounded-full flex flex-col justify-center items-center text-sm font-extrabold text-white" href="{{ route('notificaciones') }}">
+                        {{ Auth()->user()->unreadNotifications->count() }}
+                    </a>
+                @endcan
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
                         <button class="flex items-center text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out">
@@ -90,6 +97,16 @@
                 </x-responsive-nav-link>
             </div>
 
+            @if (auth()->user()->rol === 2)
+                <div class="flex gap-2 items-center p-3">
+                    <a class="w-7 h-7 bg-indigo-600 hover:bg-indigo-800 rounded-full flex flex-col justify-center items-center text-sm font-extrabold text-white" href="{{ route('notificaciones') }}">
+                        {{ Auth()->user()->unreadNotifications->count() }}
+                    </a>
+                    <p class="text-base font-medium text-gray-600">
+                        @choice('Notificacion|Notificaciones',Auth()->user()->unreadNotifications->count())
+                    </p>
+                </div>
+            @endif
             <!-- Responsive Settings Options -->
             <div class="pt-4 pb-1 border-t border-gray-200">
                 <div class="px-4">
